@@ -1,16 +1,20 @@
 
 const NotesController = {
     
-    async addEntry(req,res) {
+    async addNote(req,res) {
 
     },
 
-    async editEntry(req,res) {
+    async editNote(req,res) {
 
     },
 
-    async deleteEntry(req,res) {
+    async deleteNote(req,res) {
 
+    },
+
+    async getNote(req,res) {
+        
     }
 };
 
