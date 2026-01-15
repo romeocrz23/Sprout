@@ -12,10 +12,11 @@ const financeRoutes = require("./routes/finance.routes");
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", healthRoutes);
-app.use("/api", userRoutes);
-app.use("/api", schedulerRoutes);
-app.use("/api", notesRoutes);
-app.use("/api", financeRoutes);
+app.use("/api/auth", financeRoutes);
+app.use("/api/health", healthRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/scheduler", schedulerRoutes);
+app.use("/api/notes", notesRoutes);
+app.use("/api/finances", financeRoutes);
 
 module.exports = app;

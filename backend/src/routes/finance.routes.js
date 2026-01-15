@@ -7,55 +7,55 @@ const router = express.Router();
  * @desc Get existing budgets by ID
  * @access Private
  */
-router.get("/finances/budgets/:id", FinanceController.getBudget);
+router.get("/budgets/:id", FinanceController.getBudget);
 
 /**
  * @route POST api/finances/budgets
  * @desc Create new budget
  * @access Private
  */
-router.post("/finances/budgets", FinanceController.createBudget);
+router.post("/budgets", FinanceController.createBudget);
 
 /**
  * @route DELETE api/finances/budgets/:id
  * @desc Delete existing budgets by ID
  * @access Private
  */
-router.delete("/finances/budget/:id", FinanceController.deleteBudget);
+router.delete("/budget/:id", FinanceController.deleteBudget);
 
 /**
  * @route UPDATE api/finances/budgets/:id
  * @desc Edit existing budgets by ID
  * @access Private
  */
-router.put("/finances/budget/:id", FinanceController.editBudget);
+router.put("/budget/:id", FinanceController.editBudget);
 
 /**
  * @route GET api/finances/expenses/:id
  * @desc  Get existing expenses by ID
  * @access Private
  */
-router.get("/finances/expenses/:id", FinanceController.getExpenseItem);
+router.get("/expenses/:id", FinanceController.getExpenseItem);
 
 /**
  * @route POST api/finances/expenses
  * @desc Create new expense item
  * @access Private
  */
-router.post("/finances/expenses", FinanceController.createExpenseItem);
+router.post("/expenses", FinanceController.createExpenseItem);
 
 /**
  * @route DELETE api/finances/expenses/:id
  * @desc Delete existing expense item by ID
  * @access Private
  */
-router.delete("/finances/expenses/:id", FinanceController.deleteExpenseItem);
+router.delete("/expenses/:id", FinanceController.deleteExpenseItem);
 
 /**
  * @route UPDATE api/finances/expenses/:id
  * @desc Edit existing expense item by ID
  * @access Private
  */
-router.put("/finances/expenses/:id", FinanceController.editExpenseItem);
+router.put("/expenses/:id", FinanceController.editExpenseItem);
 
 module.exports = router;
