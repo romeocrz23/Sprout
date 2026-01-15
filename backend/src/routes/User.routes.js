@@ -10,13 +10,20 @@ const UserController = require('../controllers/User.controller');
  * @desc Get logged-in user information
  * @access Private
  */
-router.get("/users/:id", UserController.getUser);
+router.get("/users/:id", UserController.getProfile);
 
 /**
- * @route GET api/scheduler/items/:id
- * @desc Get an item from the schedule by ID
+ * @route DELETE api/scheduler/items/:id
+ * @desc Delete account
  * @access Private
  */
-router.post("/users/register", UserController.registerUser);
+router.delete("/users/:id", UserController.deleteProfile);
+
+/**
+ * @route UPDATE api/scheduler/items/:id
+ * @desc Update profile information
+ * @access Private
+ */
+router.put("/users/:id", UserController.editProfile);
 
 module.exports = router;
