@@ -34,56 +34,58 @@ export default function Login() {
 
   return (
     <div className={`home ${theme}`}>
-      <h1 className="pop show">Log In</h1>
+      <div className="auth-container pop show">
+        <h1 className="pop show">Log In</h1>
 
-      <form
-        className="auth-form pop show delay-1"
-        onSubmit={onSubmit}
-      >
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {error && (
-          <div style={{ color: "red", marginBottom: 10 }}>
-            {error}
-          </div>
-        )}
-
-        <button className="btn login" type="submit">
-          Log In
-        </button>
-      </form>
-
-      <p className="auth-link pop show delay-2">
-        Don’t have an account?{" "}
-        <span onClick={() => navigate("/signup")}>Sign Up</span>
-      </p>
-
-      {/* Theme toggle */}
-      <div className="theme-icons pop show delay-3">
-        <span
-          className={theme === "light" ? "active" : ""}
-          onClick={() => setTheme("light")}
+        <form
+          className="auth-form pop show delay-1"
+          onSubmit={onSubmit}
         >
-          ☀️
-        </span>
-        <span
-          className={theme === "dark" ? "active" : ""}
-          onClick={() => setTheme("dark")}
-        >
-          🌙
-        </span>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          {error && (
+            <div style={{ color: "red", marginBottom: 10 }}>
+              {error}
+            </div>
+          )}
+
+          <button className="btn login" type="submit">
+            Log In
+          </button>
+        </form>
+
+        <p className="auth-link pop show delay-2">
+          Don’t have an account?{" "}
+          <span onClick={() => navigate("/signup")}>Sign Up</span>
+        </p>
+
+        {/* Theme toggle */}
+        <div className="theme-icons pop show delay-3">
+          <span
+            className={theme === "light" ? "active" : ""}
+            onClick={() => setTheme("light")}
+          >
+            ☀️
+          </span>
+          <span
+            className={theme === "dark" ? "active" : ""}
+            onClick={() => setTheme("dark")}
+          >
+            🌙
+          </span>
+        </div>
       </div>
     </div>
   );

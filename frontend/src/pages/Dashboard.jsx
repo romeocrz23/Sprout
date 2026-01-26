@@ -1,99 +1,87 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Card from "../components/Card.jsx";
-import Button from "../components/Button.jsx";
-import { useStore } from "../state/store.jsx";
+import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const { state, currentUser } = useStore();
-  const user = currentUser();
+export default function Nav() {
+  const navigate = useNavigate();
 
-  const myBudgets = state.budgets.filter((b) => b.user_id === user?.user_id);
-  const myNotes = state.notes.filter((n) => n.user_id === user?.user_id);
-  const myEvents = state.calendar_events.filter((e) => e.user_id === user?.user_id);
-  const myWorkouts = state.workouts.filter((w) => w.user_id === user?.user_id);
+  const goto = (path) => () => navigate(`/${path}`);
 
   return (
-    <div style={{ display: "grid", gap: 12 }}>
-      <div className="row">
-        <div>
-          <h1 className="h1">Dashboard</h1>
-          <div className="muted">Single platform: budgeting, fitness/diet, calendar, notes, chatbot.</div>
-        </div>
-        <div className="spacer" />
-        <span className="badge">MVP prototype</span>
-      </div>
+    <div
+      style={{
+        backgroundImage: "url(/assets/forest.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        width: "100vw",
+        height: "100vh",
+        position: "relative",
+      }}
+    >
+      <img
+        src="/assets/settings.png"
+        alt="settings"
+        style={{ position: "absolute", left: 180, top: 150, cursor: "pointer", width: 180 }}
+        onClick={goto("settings")}
+      />
 
-      <div className="grid2">
-        <Card
-          title="Budgeting"
-          subtitle="Create budgets, add/edit/delete expenses, see totals and remaining balance."
-          right={
-            <Link to="/budgets">
-              <Button>Open</Button>
-            </Link>
-          }
-        >
-          <div className="row">
-            <span className="badge">{myBudgets.length} budgets</span>
-          </div>
-        </Card>
+      <img
+        src="/assets/scheduler.png"
+        alt="scheduler"
+        style={{ position: "absolute", left: 100, top: 430, cursor: "pointer", width: 900 }}
+        onClick={goto("scheduler")}
+      />
 
-        <Card
-          title="Fitness & Diet"
-          subtitle="Log workouts, maintain plans, track diet and fitness history."
-          right={
-            <Link to="/fitness">
-              <Button>Open</Button>
-            </Link>
-          }
-        >
-          <div className="row">
-            <span className="badge">{myWorkouts.length} workouts</span>
-          </div>
-        </Card>
+      <img
+        src="/assets/expenses.png"
+        alt="expenses"
+        style={{ position: "absolute", left: 900, top: 550, cursor: "pointer", width: 180 }}
+        onClick={goto("expenses")}
+      />
 
-        <Card
-          title="Calendar"
-          subtitle="Create/edit/delete events (basic checks for invalid times)."
-          right={
-            <Link to="/calendar">
-              <Button>Open</Button>
-            </Link>
-          }
-        >
-          <div className="row">
-            <span className="badge">{myEvents.length} events</span>
-          </div>
-        </Card>
+      <img
+        src="/assets/notes.png"
+        alt="notes"
+        style={{ position: "absolute", right: 300, top: 500, cursor: "pointer", width: 550 }}
+        onClick={goto("notes")}
+      />
 
-        <Card
-          title="Notes"
-          subtitle="Create, edit, delete notes. Autosave when editing."
-          right={
-            <Link to="/notes">
-              <Button>Open</Button>
-            </Link>
-          }
-        >
-          <div className="row">
-            <span className="badge">{myNotes.length} notes</span>
-          </div>
-        </Card>
+      <img
+        src="/assets/fitness.png"
+        alt="fitness"
+        style={{ position: "absolute", right: 320, top: 180, cursor: "pointer", width: 200 }}
+        onClick={goto("fitness")}
+      />
 
-        <Card
-          title="AI Chatbot"
-          subtitle="Send messages; responses are stored."
-          right={
-            <Link to="/chatbot">
-              <Button>Open</Button>
-            </Link>
-          }
-        >
-          <div className="row">
-            <span className="badge">{state.chatbot_messages.length} messages</span>
-          </div>
-        </Card>
+      <img
+        src="/assets/askmeanything.png"
+        alt="askmeanything"
+        style={{ position: "absolute", right: 50, bottom: 50, cursor: "pointer", width: 200 }}
+        onClick={goto("askmeanything")}
+      />
+
+      <img
+        src="/assets/lightdark.png"
+        alt="lightdark"
+        style={{ position: "absolute", left: "50%", top: 20, transform: "translateX(-50%)", cursor: "pointer", width: 200 }}
+        onClick={() => console.log("toggle theme")}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          height: 80,
+          background: "#4a2929",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: 24,
+          fontWeight: "bold",
+          color: "yellow",
+        }}
+      >
+        FOOTER HERE
       </div>
     </div>
   );
