@@ -2,17 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Card from "../components/Card.jsx";
 import Button from "../components/Button.jsx";
-import { useStore } from "../state/store.jsx";
+
 
 export default function Dashboard() {
-  const { state, currentUser } = useStore();
-  const user = currentUser();
-
-  const myBudgets = state.budgets.filter((b) => b.user_id === user?.user_id);
-  const myNotes = state.notes.filter((n) => n.user_id === user?.user_id);
-  const myEvents = state.calendar_events.filter((e) => e.user_id === user?.user_id);
-  const myWorkouts = state.workouts.filter((w) => w.user_id === user?.user_id);
-
+ 
   return (
     <div style={{ display: "grid", gap: 12 }}>
       <div className="row">
@@ -35,7 +28,7 @@ export default function Dashboard() {
           }
         >
           <div className="row">
-            <span className="badge">{myBudgets.length} budgets</span>
+            <span className="badge">budgets</span>
           </div>
         </Card>
 
@@ -49,7 +42,7 @@ export default function Dashboard() {
           }
         >
           <div className="row">
-            <span className="badge">{myWorkouts.length} workouts</span>
+            <span className="badge">workouts</span>
           </div>
         </Card>
 
@@ -63,7 +56,7 @@ export default function Dashboard() {
           }
         >
           <div className="row">
-            <span className="badge">{myEvents.length} events</span>
+            <span className="badge">events</span>
           </div>
         </Card>
 
@@ -77,7 +70,7 @@ export default function Dashboard() {
           }
         >
           <div className="row">
-            <span className="badge">{myNotes.length} notes</span>
+            <span className="badge">notes</span>
           </div>
         </Card>
 
@@ -91,7 +84,7 @@ export default function Dashboard() {
           }
         >
           <div className="row">
-            <span className="badge">{state.chatbot_messages.length} messages</span>
+            <span className="badge">messages</span>
           </div>
         </Card>
       </div>
