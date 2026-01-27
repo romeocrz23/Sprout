@@ -1,42 +1,91 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/auth"; // adjust path if needed
 
 export default function Login() {
   const [theme, setTheme] = useState("light");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!email) return setError("Email required");
+    if (!password) return setError("Password required");
+
+    try {
+      const user = await loginUser(email, password);
+
+      console.log("Login success:", user);
+
+      // Navigate after login (adjust route if needed)
+      navigate("/");
+
+    } catch (err) {
+      console.log("Login error:", err.message);
+      setError(err.message);
+    }
+  };
 
   return (
     <div className={`home ${theme}`}>
-      <h1 className="pop show">Log In</h1>
+      <div className="auth-container pop show">
+        <h1 className="pop show">Log In</h1>
 
-      <form className="auth-form pop show delay-1">
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-
-        <button  className="btn login" type="submit" onClick={() => navigate("/dashboard")}>
-          Log In
-        </button>
-      </form>
-
-      <p className="auth-link pop show delay-2">
-        Don’t have an account?{" "}
-        <span onClick={() => navigate("/signup")}>Sign Up</span>
-      </p>
-
-      {/* Theme toggle */}
-      <div className="theme-icons pop show delay-3">
-        <span
-          className={theme === "light" ? "active" : ""}
-          onClick={() => setTheme("light")}
+        <form
+          className="auth-form pop show delay-1"
+          onSubmit={onSubmit}
         >
-          ☀️
-        </span>
-        <span
-          className={theme === "dark" ? "active" : ""}
-          onClick={() => setTheme("dark")}
-        >
-          🌙
-        </span>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          {error && (
+            <div style={{ color: "red", marginBottom: 10 }}>
+              {error}
+            </div>
+          )}
+
+          <button className="btn login" type="submit" onClick={() => navigate("/dashboard")}>
+            Log In
+          </button>
+        </form>
+
+        <p className="auth-link pop show delay-2">
+          Don’t have an account?{" "}
+          <span onClick={() => navigate("/signup")}>Sign Up</span>
+        </p>
+
+        {/* Theme toggle */}
+        <div className="theme-icons pop show delay-3">
+          <span
+            className={theme === "light" ? "active" : ""}
+            onClick={() => setTheme("light")}
+          >
+            ☀️
+          </span>
+          <span
+            className={theme === "dark" ? "active" : ""}
+            onClick={() => setTheme("dark")}
+          >
+            🌙
+          </span>
+        </div>
       </div>
     </div>
   );
