@@ -1,41 +1,50 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/auth"; // adjust path if needed
+import { registerUser } from "../api/auth";
 
 export default function Signup() {
   const [theme, setTheme] = useState("light");
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [fullName, setFullName] = useState("");
 
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
-    if (!email) return setError("Email required");
-    if (!password) return setError("Password required");
+    const newErrors = {};
+
+    if (!fullName) newErrors.fullName = "Full name is required";
+    if (!email) newErrors.email = "Email is required";
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
 
     if (password !== confirmPassword) {
-      return setError("Passwords do not match");
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
     try {
-      const user = await registerUser(fullName, email, password);
+      setErrors({});
 
-      console.log("Register success:", user);
+      await registerUser(fullName, email, password);
 
-      // redirect????
       navigate("/login");
-
     } catch (err) {
-      console.log("Register error:", err.message);
-      setError(err.message);
+      setErrors({ form: err.message });
     }
   };
 
@@ -43,48 +52,64 @@ export default function Signup() {
     <div className={`home ${theme}`}>
       <div className="auth-container pop show">
 
-      
         <h1 className="pop show">Sign Up</h1>
 
         <form
           className="auth-form pop show delay-1"
           onSubmit={onSubmit}
         >
-          {/* Full name not used in backend yet */}
+
+          {/* Full Name */}
           <input
             type="text"
             placeholder="Full Name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           />
+          <div className="field-error">
+            {errors.fullName || ""}
+          </div>
 
-
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          <div className="field-error">
+            {errors.email || ""}
+          </div>
 
+          {/* Password */}
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className="field-error">
+            {errors.password || ""}
+          </div>
 
+          {/* Confirm Password */}
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+          <div className="field-error">
+            {errors.confirmPassword || ""}
+          </div>
 
-          {error && (
-            <div style={{ color: "red", marginBottom: 10 }}>
-              {error}
+          {/* Backend / form error */}
+          {errors.form && (
+            <div className="error-box">
+             {errors.form}
             </div>
           )}
+
 
           <button className="btn signup" type="submit">
             Create Account

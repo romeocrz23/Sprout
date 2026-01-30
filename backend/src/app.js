@@ -12,6 +12,7 @@ const financeRoutes = require("./routes/finance.routes");
 const chatbotRoutes = require("./routes/chatbot.routes");
 const authRoutes = require("./routes/auth.routes");
 
+const errorHandler = require("./middleware/errorHandler");
 const { chatRateLimiter } = require("./middleware/rateLimits");
 
 app.use(cors({
@@ -31,6 +32,7 @@ app.use(session({
 
 // ----- OTHER MIDDLEWARE ------ //
 app.use(chatRateLimiter);
+app.use(errorHandler);
 
 // ----- API ROUTES ------ //
 app.use("/api/auth", authRoutes);

@@ -7,88 +7,106 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
-    if (!email) return setError("Email required");
-    if (!password) return setError("Password required");
+    const newErrors = {};
+
+    if (!email) newErrors.email = "Email is required";
+    if (!password) newErrors.password = "Password is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     try {
-      const user = await loginUser(email, password);
-      console.log("Login success:", user);
+      setErrors({});
 
-      // Only navigate if login succeeds
+      await loginUser(email, password);
+
       navigate("/dashboard");
 
     } catch (err) {
-      console.log("Login error:", err.message);
-      setError(err.message);
+      setErrors({ form: err.message });
     }
   };
 
   return (
-  <div className={`home ${theme}`}>
+    <div className={`home ${theme}`}>
 
-    <div className="auth-container pop show">
+      <div className="auth-container pop show">
 
-      <h1 className="pop show">Log In</h1>
+        <h1 className="pop show">Log In</h1>
 
-      <form className="auth-form pop show delay-1" onSubmit={onSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <form className="auth-form pop show delay-1" onSubmit={onSubmit}>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {error && (
-          <div style={{ color: "red", marginBottom: 10 }}>
-            {error}
+          {/* Email */}
+          <div className="field-group">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <div className="field-error">
+              {errors.email || ""}
+            </div>
           </div>
-        )}
 
-        <button className="btn login" type="submit">
-          Log In
-        </button>
-      </form>
+          {/* Password */}
+          <div className="field-group">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div className="field-error">
+              {errors.password || ""}
+            </div>
+          </div>
 
-      <p className="auth-link pop show delay-2">
-        Don’t have an account?{" "}
-        <span onClick={() => navigate("/signup")}>Sign Up</span>
-      </p>
+          {/* Backend error */}
+          {errors.form && (
+            <div className="error-box">
+              {errors.form}
+            </div>
+          )}
 
-      {/*  Toggle  */}
-      <div className="theme-icons inline pop show delay-3">
-        <span
-          className={theme === "light" ? "active" : ""}
-          onClick={() => setTheme("light")}
-        >
-          ☀️
-        </span>
-        <span
-          className={theme === "dark" ? "active" : ""}
-          onClick={() => setTheme("dark")}
-        >
-          🌙
-        </span>
+          <button className="btn login" type="submit">
+            Log In
+          </button>
+        </form>
+
+        <p className="auth-link pop show delay-2">
+          Don’t have an account?{" "}
+          <span onClick={() => navigate("/signup")}>Sign Up</span>
+        </p>
+
+        {/* Toggle */}
+        <div className="theme-icons inline pop show delay-3">
+          <span
+            className={theme === "light" ? "active" : ""}
+            onClick={() => setTheme("light")}
+          >
+            ☀️
+          </span>
+          <span
+            className={theme === "dark" ? "active" : ""}
+            onClick={() => setTheme("dark")}
+          >
+            🌙
+          </span>
+        </div>
+
       </div>
 
     </div>
-
-  </div>
-);
-
-
+  );
 }
