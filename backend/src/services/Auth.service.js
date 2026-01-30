@@ -17,19 +17,38 @@ const prisma = require("../clients/prisma.client");
  */
 const registerUser = async (fullName, email, password) => {
 
-  // Checks if the email already exists
+  // Basic validation
+  if (!fullName) {
+    const err = new Error("Full name is required");
+    err.status = 400;
+    throw err;
+  }
+
+  if (!email) {
+    const err = new Error("Email is required");
+    err.status = 400;
+    throw err;
+  }
+
+  if (!password) {
+    const err = new Error("Password is required");
+    err.status = 400;
+    throw err;
+  }
+
+  // Check if email exists
   const existingUser = await prisma.user.findUnique({
     where: { email }
   });
 
   if (existingUser) {
-    throw new Error("Email already in use");
+    const err = new Error("Email already in use");
+    err.status = 400;
+    throw err;
   }
 
-  // Hash password before storing
   const passwordHash = await bcrypt.hash(password, 12);
 
-  // Create user record
   const user = await prisma.user.create({
     data: {
       fullName,
@@ -38,7 +57,6 @@ const registerUser = async (fullName, email, password) => {
     }
   });
 
-  // Return user data
   return {
     id: user.id,
     email: user.email,
@@ -54,20 +72,28 @@ const registerUser = async (fullName, email, password) => {
  */
 const loginUser = async (email, password) => {
 
-  // Find user by email
+  if (!email || !password) {
+    const err = new Error("Email and password are required");
+    err.status = 400;
+    throw err;
+  }
+
   const user = await prisma.user.findUnique({
     where: { email }
   });
 
   if (!user) {
-    throw new Error("Invalid credentials");
+    const err = new Error("Invalid email or password");
+    err.status = 401;
+    throw err;
   }
 
-  // Compare provided password with stored hash
   const isValid = await bcrypt.compare(password, user.passwordHash);
 
   if (!isValid) {
-    throw new Error("Invalid credentials");
+    const err = new Error("Invalid email or password");
+    err.status = 401;
+    throw err;
   }
 
   return {

@@ -25,9 +25,8 @@ const API_BASE =
  * @throws {Error} When the request fails or backend returns an error
  */
 export const apiFetch = async (path, options = {}) => {
-
   const response = await fetch(`${API_BASE}${path}`, {
-    credentials: "include", // Include cookies for session-based authentication
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...options.headers
@@ -35,12 +34,19 @@ export const apiFetch = async (path, options = {}) => {
     ...options
   });
 
-  const data = await response.json();
+  const text = await response.text(); // read raw response first
 
-  // Standardized error handling for failed requests
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = null; // response wasn't JSON (likely HTML error page)
+  }
+
   if (!response.ok) {
-    throw new Error(data.error ?? data.message ?? "Request failed");
+    throw new Error(data?.error ?? data?.message ?? "Request failed");
   }
 
   return data;
 };
+
